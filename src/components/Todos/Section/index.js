@@ -1,4 +1,4 @@
-import React, { startTransition, useState } from "react";
+import React, { useState } from "react";
 
 const Section = () => {
     const [inputValue, setInputValue] = useState('');
@@ -7,17 +7,42 @@ const Section = () => {
         { text: "Learn React", completed: false },
         { text: "Have a life!", completed: false }
     ]);
+    const [filter, setFilter] = useState('all'); // all, active, completed
 
     const onSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim() !== '') {
             setTodos([
-                ...todos, Transition
+                ...todos,
                 { text: inputValue, completed: false }
             ]);
             setInputValue('');
         }
     };
+
+    const handleFilter = (newFilter) => (e) => {
+        e.preventDefault();
+        setFilter(newFilter);
+    };
+
+    const handleToggle = (idx) => {
+        setTodos(todos =>
+            todos.map((todo, i) =>
+                i === idx ? { ...todo, completed: !todo.completed } : todo
+            )
+        );
+    };
+
+    const handleClearCompleted = () => {
+        setTodos(todos => todos.filter(todo => !todo.completed));
+    };
+
+    // Filtrelenmiş todo listesi
+    const filteredTodos = todos.filter(todo => {
+        if (filter === 'active') return !todo.completed;
+        if (filter === 'completed') return todo.completed;
+        return true;
+    });
 
     return (
         <section className="todoapp">
@@ -40,10 +65,15 @@ const Section = () => {
                 </label>
 
                 <ul id='ulList' className="todo-list">
-                    {todos.map((todo, idx) => (
+                    {filteredTodos.map((todo, idx) => (
                         <li key={idx} className={todo.completed ? "completed" : ""}>
                             <div className="view">
-                                <input className="toggle" type="checkbox" checked={todo.completed} readOnly />
+                                <input
+                                    className="toggle"
+                                    type="checkbox"
+                                    checked={todo.completed}
+                                    onChange={() => handleToggle(todos.indexOf(todo))}
+                                />
                                 <label>{todo.text}</label>
                                 <button className="destroy"></button>
                             </div>
@@ -60,17 +90,29 @@ const Section = () => {
 
                 <ul className="filters">
                     <li>
-                        <a href="#/" className="selected">All</a>
+                        <a
+                            href="#/"
+                            className={filter === 'all' ? "selected" : ""}
+                            onClick={handleFilter('all')}
+                        >All</a>
                     </li>
                     <li>
-                        <a href="#/">Active</a>
+                        <a
+                            href="#/"
+                            className={filter === 'active' ? "selected" : ""}
+                            onClick={handleFilter('active')}
+                        >Active</a>
                     </li>
                     <li>
-                        <a href="#/">Completed</a>
+                        <a
+                            href="#/"
+                            className={filter === 'completed' ? "selected" : ""}
+                            onClick={handleFilter('completed')}
+                        >Completed</a>
                     </li>
                 </ul>
 
-                <button className="clear-completed">
+                <button className="clear-completed" onClick={handleClearCompleted}>
                     Clear completed
                 </button>
             </footer>
