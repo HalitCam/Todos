@@ -79,4 +79,3 @@ const Section = () => {
 };
 
 export default Section;
-//added code to handle adding a new todo item
