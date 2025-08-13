@@ -7,7 +7,7 @@ const Section = () => {
         { text: "Learn React", completed: false },
         { text: "Have a life!", completed: false }
     ]);
-// value not forget!
+
     const onSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim() !== '') {
