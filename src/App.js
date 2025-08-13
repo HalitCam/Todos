@@ -1,4 +1,3 @@
-import styles from './components/Todos/styles.css';
 import Todos from './components/Todos';
 
 function App() {
