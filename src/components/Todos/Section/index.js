@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { startTransition, useState } from "react";
 
 const Section = () => {
     const [inputValue, setInputValue] = useState('');
@@ -7,12 +7,12 @@ const Section = () => {
         { text: "Learn React", completed: false },
         { text: "Have a life!", completed: false }
     ]);
-
+// value not forget!
     const onSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim() !== '') {
             setTodos([
-                ...todos,
+                ...todos, Transition
                 { text: inputValue, completed: false }
             ]);
             setInputValue('');
